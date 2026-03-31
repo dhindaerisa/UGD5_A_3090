@@ -1,33 +1,28 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Game1 from '../../components/Game1';
+import Game1 from '../../components/Game1'; // ✅ FIX
 
-export default function Home() {
+export default function HomePage() {
   const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const isLogin = localStorage.getItem('isLogin');
 
     if (!isLogin) {
-      router.replace('/auth/not-authorized');
+      router.push('/auth/not-authorized');
     } else {
-      setIsAuthorized(true);
+      setLoading(false);
     }
-  }, [router]);
+  }, []);
 
-  // ⛔ Jangan render apa-apa sebelum cek login selesai
-  if (!isAuthorized) return null;
+  if (loading) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full bg-gray-900">
-      <h1 className="text-4xl font-bold mb-4 text-white">
-        Selamat Datang!
-      </h1>
-
-      <Game1 />
+    <div>
+      <Game1 /> {/* ✅ FIX */}
     </div>
   );
 }

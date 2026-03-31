@@ -111,8 +111,8 @@ export default function LoginPage() {
 
     toast.success('Login Berhasil!');
 
-    // 🔥 AUTH GUARD FIX
-    document.cookie = "auth=true; path=/";
+    // 🔥 FIX AUTH (INI YANG PENTING)
+    localStorage.setItem('isLogin', 'true');
 
     router.push('/home');
   };
@@ -140,7 +140,7 @@ export default function LoginPage() {
             placeholder="Masukan email"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            className={`w-full px-4 py-2 rounded ${
               errors.email ? 'border-2 border-red-500' : 'border border-gray-300'
             }`}
           />
@@ -160,7 +160,7 @@ export default function LoginPage() {
               placeholder="Masukan password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-4 py-2 rounded ${
+              className={`w-full px-4 py-2 rounded pr-10 ${
                 errors.password ? 'border-2 border-red-500' : 'border border-gray-300'
               }`}
             />
@@ -170,29 +170,13 @@ export default function LoginPage() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-2 text-gray-500"
             >
-              {showPassword ? '👁' : '👁'}
+              {showPassword ? '🙈' : '👁'}
             </button>
           </div>
 
           {errors.password && (
             <p className="text-red-500 text-sm italic">{errors.password}</p>
           )}
-        </div>
-
-        {/* INGAT SAYA + FORGOT */}
-        <div className="flex justify-between items-center text-sm">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="rememberMe"
-              onChange={handleChange}
-            />
-            Ingat Saya
-          </label>
-
-          <span className="text-blue-600 cursor-pointer">
-            Forgot Password?
-          </span>
         </div>
 
         {/* CAPTCHA */}
@@ -221,13 +205,12 @@ export default function LoginPage() {
           )}
         </div>
 
-        {/* BUTTON */}
         <button
           type="submit"
           disabled={attempt === 0}
           className={`w-full py-2 rounded text-white ${
             attempt === 0
-              ? 'bg-gray-400 cursor-not-allowed'
+              ? 'bg-gray-400'
               : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
@@ -241,7 +224,7 @@ export default function LoginPage() {
           className={`w-full py-2 rounded text-white ${
             attempt === 0
               ? 'bg-green-500 hover:bg-green-600'
-              : 'bg-gray-400 cursor-not-allowed'
+              : 'bg-gray-400'
           }`}
         >
           Reset Kesempatan
