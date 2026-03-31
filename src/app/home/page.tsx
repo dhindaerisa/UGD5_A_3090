@@ -2,27 +2,35 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Game1 from '../../components/Game1'; // ✅ FIX
+import Game1 from '../../components/Game1';
 
 export default function HomePage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+
+  const [isAllowed, setIsAllowed] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     const isLogin = localStorage.getItem('isLogin');
 
-    if (!isLogin) {
-      router.push('/auth/not-authorized');
+    if (isLogin) {
+      setIsAllowed(true);
     } else {
-      setLoading(false);
+      router.replace('/auth/not-authorized'); // 🔥 penting pakai replace
     }
+
+    setChecked(true);
   }, []);
 
-  if (loading) return null;
+  // ⛔ tahan semua render sebelum dicek
+  if (!checked) return null;
+
+  // ⛔ kalau tidak login, jangan render apapun
+  if (!isAllowed) return null;
 
   return (
     <div>
-      <Game1 /> {/* ✅ FIX */}
+      <Game1 />
     </div>
   );
 }
